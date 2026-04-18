@@ -92,12 +92,12 @@ Lá você encontrará:
 
 ## 📝 Endpoints Disponíveis
 
-### Buscar CEP e Dados Climáticos
+### Buscar Dados Climáticos
 ```
 GET /weather?cep=01001000
 ```
 
-Retorna informações do endereço (latitude, longitude, localidade, estado, etc.) em formato JSON obtidas via ViaCEP, além de incluir dados climáticos em tempo real da localidade via WeatherAPI.
+Retorna informações dos dados climáticos (temperatura em graus Celsius, Fahrenheit e Kelvin) em tempo real da localidade via WeatherAPI.
 
 
 ## 📞 Contato
