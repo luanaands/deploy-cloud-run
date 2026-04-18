@@ -7,3 +7,10 @@ func FromViaCep(resp *entity.CepViaCepResponse) *CepResponse {
 		Localidade: resp.Localidade,
 	}
 }
+
+func FromWeather(resp *entity.WeatherResponse) *WeatherResponse {
+	return &WeatherResponse{
+		TempC: resp.Current.TempC,
+		TempF: resp.Current.TempF,
+	}
+}

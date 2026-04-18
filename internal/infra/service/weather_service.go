@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/luanaands/deploy-cloud-run/internal/dto"
 	"github.com/luanaands/deploy-cloud-run/internal/entity"
 )
 
@@ -19,7 +20,7 @@ func NewWeatherService() *WeatherService {
 	}
 }
 
-func (s *WeatherService) GetWeather(city string, apiKey string, baseURL string) (*entity.WeatherResponse, error) {
+func (s *WeatherService) GetWeather(city string, apiKey string, baseURL string) (*dto.WeatherResponse, error) {
 	u, err := url.Parse(baseURL)
 	if err != nil {
 		return nil, err
@@ -48,5 +49,5 @@ func (s *WeatherService) GetWeather(city string, apiKey string, baseURL string) 
 	if err := json.Unmarshal(body, &response); err != nil {
 		return nil, err
 	}
-	return &response, nil
+	return dto.FromWeather(&response), nil
 }

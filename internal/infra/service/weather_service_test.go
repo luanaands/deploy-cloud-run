@@ -72,6 +72,6 @@ func TestGetWeather(t *testing.T) {
 	s := &WeatherService{client: ts.Client()}
 	resp, err := s.GetWeather("São Paulo", "fakekey", ts.URL)
 	assert.Nil(t, err)
-	assert.Equal(t, resp.Location.Name, "Sao Paulo")
-	assert.Equal(t, resp.Current.TempC, 21.3)
+	assert.Equal(t, resp.TempC, 21.3)
+	assert.Equal(t, resp.TempF, 70.3)
 }

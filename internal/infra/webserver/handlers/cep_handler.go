@@ -60,9 +60,9 @@ func (h *CepHandler) GetCep(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var result dto.Response
-	result.TempC = realtimeWeather.Current.TempC
-	result.TempF = realtimeWeather.Current.TempF
-	result.TempK = realtimeWeather.Current.TempC + 273
+	result.TempC = realtimeWeather.TempC
+	result.TempF = realtimeWeather.TempF
+	result.TempK = realtimeWeather.TempC + 273
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)

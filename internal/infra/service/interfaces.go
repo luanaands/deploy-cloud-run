@@ -2,7 +2,6 @@ package service
 
 import (
 	"github.com/luanaands/deploy-cloud-run/internal/dto"
-	"github.com/luanaands/deploy-cloud-run/internal/entity"
 )
 
 type CepInterface interface {
@@ -10,5 +9,5 @@ type CepInterface interface {
 }
 
 type WeatherInterface interface {
-	GetWeather(city string, apiKey string, baseURL string) (*entity.WeatherResponse, error)
+	GetWeather(city string, apiKey string, baseURL string) (*dto.WeatherResponse, error)
 }
