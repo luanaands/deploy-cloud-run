@@ -1,4 +1,4 @@
-module github.com/luanaands/multithreading-golang
+module github.com/luanaands/deploy-cloud-run
 
 go 1.25.0
 

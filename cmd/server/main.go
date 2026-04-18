@@ -5,10 +5,10 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/luanaands/multithreading-golang/configs"
-	_ "github.com/luanaands/multithreading-golang/docs"
-	"github.com/luanaands/multithreading-golang/internal/infra/service"
-	"github.com/luanaands/multithreading-golang/internal/infra/webserver/handlers"
+	"github.com/luanaands/deploy-cloud-run/configs"
+	_ "github.com/luanaands/deploy-cloud-run/docs"
+	"github.com/luanaands/deploy-cloud-run/internal/infra/service"
+	"github.com/luanaands/deploy-cloud-run/internal/infra/webserver/handlers"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
@@ -33,9 +33,12 @@ func main() {
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.WithValue("BrasilApHost", configs.ApiHost))
 	r.Use(middleware.WithValue("ViaCepHost", configs.OtherApiHost))
+	r.Use(middleware.WithValue("ApiWeatherHost", configs.ApiWeatherHost))
+	r.Use(middleware.WithValue("ApiWeatherKey", configs.ApiWeatherKey))
 
 	var cepService service.CepInterface = service.NewCepService()
-	handler := handlers.NewCepHandler(cepService)
+	var weatherService service.WeatherInterface = service.NewWeatherService()
+	handler := handlers.NewCepHandler(cepService, weatherService)
 
 	r.Get("/cep", handler.GetCep)
 

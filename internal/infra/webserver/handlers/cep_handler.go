@@ -3,38 +3,34 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
-	"time"
 
-	"github.com/luanaands/multithreading-golang/internal/dto"
-	"github.com/luanaands/multithreading-golang/internal/infra/service"
+	"github.com/luanaands/deploy-cloud-run/internal/dto"
+	"github.com/luanaands/deploy-cloud-run/internal/infra/service"
 )
 
 type CepHandler struct {
-	Service service.CepInterface
+	Service        service.CepInterface
+	WeatherService service.WeatherInterface
 }
 
-func NewCepHandler(service service.CepInterface) *CepHandler {
+func NewCepHandler(service service.CepInterface, weatherService service.WeatherInterface) *CepHandler {
 	return &CepHandler{
-		Service: service,
+		Service:        service,
+		WeatherService: weatherService,
 	}
 }
 
-// GetCep busca informações de CEP em paralelo (BrasilAPI e ViaCEP)
-// @Summary Buscar CEP
-// @Description Retorna dados do CEP consultando BrasilAPI e ViaCEP em paralelo
+// @Summary Buscar clima atual
+// @Description Retorna dados do tempo consultando ViaCEP e WeatherAPI
 // @Tags CEP
 // @Accept json
 // @Produce json
 // @Param cep query string true "CEP sem formatação (ex: 01001000)"
-// @Success 200 {object} dto.CepResponse "CEP encontrado"
-// @Failure 400 {object} map[string]string "CEP é obrigatório"
-// @Failure 404 {object} map[string]string "CEP não encontrado"
-// @Failure 500 {object} map[string]string "Erro interno"
-// @Failure 504 {object} map[string]string "Tempo de resposta esgotado"
 // @Router /cep [get]
 func (h *CepHandler) GetCep(w http.ResponseWriter, r *http.Request) {
-	brasilApiUrl := r.Context().Value("BrasilApHost").(string)
 	viaCepUrl := r.Context().Value("ViaCepHost").(string)
+	apiWeatherHost := r.Context().Value("ApiWeatherHost").(string)
+	apiWeatherKey := r.Context().Value("ApiWeatherKey").(string)
 	cep := r.URL.Query().Get("cep")
 
 	if cep == "" {
@@ -42,60 +38,32 @@ func (h *CepHandler) GetCep(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(map[string]string{"error": "CEP é obrigatório"})
 		return
 	}
-	// FAZER UM CANAL
-	responseChannel := make(chan *dto.CepResponse)
-	// OUTRO CANAL
-	responseChannel2 := make(chan *dto.CepResponse)
+	// convert string to int
 
-	go func() {
-		//time.Sleep(2 * time.Second) // Simula demora na resposta
-
-		response, err := h.Service.GetBrasilApi(cep, brasilApiUrl)
-		if err != nil {
-			responseChannel <- nil
-			return
-		}
-		responseChannel <- response
-	}()
-
-	go func() {
-		//time.Sleep(2 * time.Second) // Simula demora na resposta
-		response, err := h.Service.GetViaCep(cep, viaCepUrl)
-		if err != nil {
-			responseChannel2 <- nil
-			return
-		}
-		responseChannel2 <- response
-	}()
-
-	var result *dto.Response
-	select {
-	case res := <-responseChannel:
-		if res != nil {
-			result = &dto.Response{
-				Host:     brasilApiUrl,
-				Response: *res,
-			}
-		}
-	case res2 := <-responseChannel2:
-		if res2 != nil {
-			result = &dto.Response{
-				Host:     viaCepUrl,
-				Response: *res2,
-			}
-		}
-
-	case <-time.After(time.Second):
-		w.WriteHeader(http.StatusGatewayTimeout)
-		json.NewEncoder(w).Encode(map[string]string{"error": "Tempo de resposta esgotado"})
+	if len(cep) != 8 {
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		json.NewEncoder(w).Encode(map[string]string{"error": "invalid zipcode"})
 		return
 	}
 
-	if result == nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"error": "Erro interno"})
+	viaCepResponse, err := h.Service.GetViaCep(cep, viaCepUrl)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": "can not find zipcode"})
 		return
 	}
+
+	realtimeWeather, err := h.WeatherService.GetWeather(viaCepResponse.Localidade, apiWeatherKey, apiWeatherHost)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": "can not find weather"})
+		return
+	}
+
+	var result dto.Response
+	result.TempC = realtimeWeather.Current.TempC
+	result.TempF = realtimeWeather.Current.TempF
+	result.TempK = realtimeWeather.Current.TempC + 273
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)

@@ -5,8 +5,10 @@ import (
 )
 
 type Conf struct {
-	ApiHost      string `mapstructure:"API_HOST"`
-	OtherApiHost string `mapstructure:"OTHER_API_HOST"`
+	ApiHost        string `mapstructure:"API_HOST"`
+	OtherApiHost   string `mapstructure:"OTHER_API_HOST"`
+	ApiWeatherKey  string `mapstructure:"API_WEATHER_KEY"`
+	ApiWeatherHost string `mapstructure:"API_WEATHER_HOST"`
 }
 
 func LoadConfig(path string) (*Conf, error) {
