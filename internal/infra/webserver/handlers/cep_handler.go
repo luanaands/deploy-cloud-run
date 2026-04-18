@@ -26,7 +26,7 @@ func NewCepHandler(service service.CepInterface, weatherService service.WeatherI
 // @Accept json
 // @Produce json
 // @Param cep query string true "CEP sem formatação (ex: 01001000)"
-// @Router /cep [get]
+// @Router /weather [get]
 func (h *CepHandler) GetCep(w http.ResponseWriter, r *http.Request) {
 	viaCepUrl := r.Context().Value("ViaCepHost").(string)
 	apiWeatherHost := r.Context().Value("ApiWeatherHost").(string)
@@ -38,7 +38,6 @@ func (h *CepHandler) GetCep(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(map[string]string{"error": "CEP é obrigatório"})
 		return
 	}
-	// convert string to int
 
 	if len(cep) != 8 {
 		w.WriteHeader(http.StatusUnprocessableEntity)

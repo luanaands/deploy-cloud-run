@@ -5,8 +5,7 @@ import (
 )
 
 type Conf struct {
-	ApiHost        string `mapstructure:"API_HOST"`
-	OtherApiHost   string `mapstructure:"OTHER_API_HOST"`
+	ViaCepApiHost  string `mapstructure:"VIA_CEP_API_HOST"`
 	ApiWeatherKey  string `mapstructure:"API_WEATHER_KEY"`
 	ApiWeatherHost string `mapstructure:"API_WEATHER_HOST"`
 }

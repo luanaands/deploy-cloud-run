@@ -1,37 +1,20 @@
 basePath: /
-definitions:
-  dto.CepResponse:
-    properties:
-      cep:
-        type: string
-      city:
-        description: localidade / city
-        type: string
-      neighborhood:
-        description: bairro / neighborhood
-        type: string
-      state:
-        description: uf / state
-        type: string
-      street:
-        description: logradouro / street
-        type: string
-    type: object
 host: localhost:8000
 info:
   contact:
     email: luanaands@gmail.com
     name: Luana Andrade
-  description: API para consulta de CEP em paralelo (BrasilAPI + ViaCEP)
+  description: API para consulta do tempo real de um CEP utilizando a API do ViaCEP
+    e da WeatherAPI.
   termsOfService: http://swagger.io/terms/
   title: Desafio CEP API - golang
   version: "1.0"
 paths:
-  /cep:
+  /weather:
     get:
       consumes:
       - application/json
-      description: Retorna dados do CEP consultando BrasilAPI e ViaCEP em paralelo
+      description: Retorna dados do tempo consultando ViaCEP e WeatherAPI
       parameters:
       - description: 'CEP sem formatação (ex: 01001000)'
         in: query
@@ -40,30 +23,8 @@ paths:
         type: string
       produces:
       - application/json
-      responses:
-        "200":
-          description: CEP encontrado
-          schema:
-            $ref: '#/definitions/dto.CepResponse'
-        "400":
-          description: CEP é obrigatório
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "404":
-          description: CEP não encontrado
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Erro interno
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Buscar CEP
+      responses: {}
+      summary: Buscar clima atual
       tags:
       - CEP
 swagger: "2.0"

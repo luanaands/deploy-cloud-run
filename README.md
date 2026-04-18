@@ -1,14 +1,14 @@
-# Desafio CEP API - Go
+# Desafio weather API - Go
 
-API para consulta de CEP em paralelo, integrando dados de **BrasilAPI** e **ViaCEP** de forma concorrente usando Go.
+API para tempo real, integrando dados de **WeatherAPI** e **ViaCEP**.
 
 ## 🚀 Descrição
 
-Projeto desenvolvido em Go que implementa uma API RESTful para buscar informações de endereços através do código de endereçamento postal (CEP). A aplicação realiza requisições paralelas a múltiplas fontes de dados, demonstrando o uso de multithreading/concorrência em Go.
+Projeto desenvolvido em Go que implementa uma API RESTful para buscar informações de dados climáticos em tempo real através do código de endereçamento postal (CEP). A aplicação integra **ViaCEP** para dados de endereços e **WeatherAPI** para informações climáticas, realizando requisições paralelas para otimizar o tempo de resposta.
 
 ## 📋 Pré-requisitos
 
-- Go 1.19 ou superior
+- Go 1.21 ou superior
 - Git
 
 ## 🏃 Como Executar o Servidor
@@ -26,8 +26,9 @@ Projeto desenvolvido em Go que implementa uma API RESTful para buscar informaç�
 
 3. Configure as variáveis de ambiente (crie um arquivo `.env`) no caminho /cmd/server
    ```env
-   API_HOST=https://brasilapi.com.br/api/address/v1/public
-   OTHER_API_HOST=https://viacep.com.br/ws
+   VIA_CEP_API_HOST=https://viacep.com.br/ws
+   API_WEATHER_HOST=https://api.weatherapi.com/v1/current.json
+   API_WEATHER_KEY=sua_chave_de_api_aqui
    ```
 
 4. Execute o servidor
@@ -86,17 +87,17 @@ Lá você encontrará:
 
 3. **Exemplo de requisição**:
    ```http
-   GET http://localhost:8000/cep?cep=01001000 HTTP/1.1
+   GET http://localhost:8000/weather?cep=01001000 HTTP/1.1
    ```
 
 ## 📝 Endpoints Disponíveis
 
-### Buscar CEP
+### Buscar CEP e Dados Climáticos
 ```
-GET /cep?cep=01001000
+GET /weather?cep=01001000
 ```
 
-Retorna informações do endereço em formato JSON com dados de múltiplas fontes.
+Retorna informações do endereço (latitude, longitude, localidade, estado, etc.) em formato JSON obtidas via ViaCEP, além de incluir dados climáticos em tempo real da localidade via WeatherAPI.
 
 
 ## 📞 Contato

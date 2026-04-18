@@ -19,9 +19,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/cep": {
+        "/weather": {
             "get": {
-                "description": "Retorna dados do CEP consultando BrasilAPI e ViaCEP em paralelo",
+                "description": "Retorna dados do tempo consultando ViaCEP e WeatherAPI",
                 "consumes": [
                     "application/json"
                 ],
@@ -31,7 +31,7 @@ const docTemplate = `{
                 "tags": [
                     "CEP"
                 ],
-                "summary": "Buscar CEP",
+                "summary": "Buscar clima atual",
                 "parameters": [
                     {
                         "type": "string",
@@ -41,67 +41,7 @@ const docTemplate = `{
                         "required": true
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "CEP encontrado",
-                        "schema": {
-                            "$ref": "#/definitions/dto.CepResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "CEP é obrigatório",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "CEP não encontrado",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Erro interno",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    },
-    "definitions": {
-        "dto.CepResponse": {
-            "type": "object",
-            "properties": {
-                "cep": {
-                    "type": "string"
-                },
-                "city": {
-                    "description": "localidade / city",
-                    "type": "string"
-                },
-                "neighborhood": {
-                    "description": "bairro / neighborhood",
-                    "type": "string"
-                },
-                "state": {
-                    "description": "uf / state",
-                    "type": "string"
-                },
-                "street": {
-                    "description": "logradouro / street",
-                    "type": "string"
-                }
+                "responses": {}
             }
         }
     }
@@ -114,7 +54,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Desafio CEP API - golang",
-	Description:      "API para consulta de CEP em paralelo (BrasilAPI + ViaCEP)",
+	Description:      "API para consulta do tempo real de um CEP utilizando a API do ViaCEP e da WeatherAPI.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

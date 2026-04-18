@@ -14,7 +14,7 @@ import (
 
 // @title Desafio CEP API - golang
 // @version 1.0
-// @description API para consulta de CEP em paralelo (BrasilAPI + ViaCEP)
+// @description API para consulta do tempo real de um CEP utilizando a API do ViaCEP e da WeatherAPI.
 // @termsOfService http://swagger.io/terms/
 
 // @contact.name Luana Andrade
@@ -31,8 +31,7 @@ func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
-	r.Use(middleware.WithValue("BrasilApHost", configs.ApiHost))
-	r.Use(middleware.WithValue("ViaCepHost", configs.OtherApiHost))
+	r.Use(middleware.WithValue("ViaCepHost", configs.ViaCepApiHost))
 	r.Use(middleware.WithValue("ApiWeatherHost", configs.ApiWeatherHost))
 	r.Use(middleware.WithValue("ApiWeatherKey", configs.ApiWeatherKey))
 
@@ -40,7 +39,7 @@ func main() {
 	var weatherService service.WeatherInterface = service.NewWeatherService()
 	handler := handlers.NewCepHandler(cepService, weatherService)
 
-	r.Get("/cep", handler.GetCep)
+	r.Get("/weather", handler.GetCep)
 
 	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/docs/doc.json")))
 
