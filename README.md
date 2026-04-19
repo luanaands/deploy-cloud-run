@@ -53,7 +53,7 @@ O servidor estará disponível em `http://localhost:8080`
    docker run -p 8080:8080 --env-file cmd/server/.env weather-api
    ```
 
-O servidor estará disponível em `https://deploy-cloud-run-mepu6h3qaa-uc.a.run.app`
+O servidor estará disponível em `http://localhost:8080`
 
 ## 🧪 Como Rodar os Testes
 
@@ -80,7 +80,7 @@ go test -cover ./...
 Com o servidor executando, acesse a documentação da API no seu navegador:
 
 ```
-https://deploy-cloud-run-mepu6h3qaa-uc.a.run.app/docs/index.html
+http://localhost:8080/docs/index.html
 ```
 
 Lá você encontrará:
