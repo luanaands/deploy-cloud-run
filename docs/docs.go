@@ -50,9 +50,9 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "deploy-cloud-run-mepu6h3qaa-uc.a.run.app",
 	BasePath:         "/",
-	Schemes:          []string{},
+	Schemes:          []string{"https"},
 	Title:            "Desafio CEP API - golang",
 	Description:      "API para consulta do tempo real de um CEP utilizando a API do ViaCEP e da WeatherAPI.",
 	InfoInstanceName: "swagger",

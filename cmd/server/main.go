@@ -20,7 +20,8 @@ import (
 // @contact.name Luana Andrade
 // @contact.email luanaands@gmail.com
 
-// @host localhost:8080
+// @host deploy-cloud-run-1020181349268.us-central1.run.app
+// @schemes https
 // @basePath /
 func main() {
 	configs, err := configs.LoadConfig(".")
@@ -41,7 +42,7 @@ func main() {
 
 	r.Get("/weather", handler.GetCep)
 
-	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8080/docs/doc.json")))
+	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("https://deploy-cloud-run-1020181349268.us-central1.run.app/docs/doc.json")))
 
 	http.ListenAndServe(":8080", r)
 }

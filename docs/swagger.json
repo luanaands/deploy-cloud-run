@@ -1,4 +1,7 @@
 {
+    "schemes": [
+        "https"
+    ],
     "swagger": "2.0",
     "info": {
         "description": "API para consulta do tempo real de um CEP utilizando a API do ViaCEP e da WeatherAPI.",
@@ -10,7 +13,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "deploy-cloud-run-mepu6h3qaa-uc.a.run.app",
     "basePath": "/",
     "paths": {
         "/weather": {

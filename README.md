@@ -10,6 +10,7 @@ Projeto desenvolvido em Go que implementa uma API RESTful para buscar informaç�
 
 - Go 1.21 ou superior
 - Git
+- Docker (opcional, para execução via container)
 
 ## 🏃 Como Executar o Servidor
 
@@ -31,12 +32,28 @@ Projeto desenvolvido em Go que implementa uma API RESTful para buscar informaç�
    API_WEATHER_KEY=sua_chave_de_api_aqui
    ```
 
+   **Nota:** API_WEATHER_KEY: Obtenha sua chave gratuita fazendo login em https://www.weatherapi.com/
+
 4. Execute o servidor
    ```bash
    go run main.go
    ```
 
-O servidor estará disponível em `http://localhost:8000`
+O servidor estará disponível em `http://localhost:8080`
+
+## 🐳 Como Executar com Docker
+
+1. Construa a imagem Docker:
+   ```bash
+   docker build -t weather-api .
+   ```
+
+2. Execute o container:
+   ```bash
+   docker run -p 8080:8080 --env-file cmd/server/.env weather-api
+   ```
+
+O servidor estará disponível em `https://deploy-cloud-run-mepu6h3qaa-uc.a.run.app`
 
 ## 🧪 Como Rodar os Testes
 
@@ -63,7 +80,7 @@ go test -cover ./...
 Com o servidor executando, acesse a documentação da API no seu navegador:
 
 ```
-http://localhost:8000/docs/index.html
+https://deploy-cloud-run-mepu6h3qaa-uc.a.run.app/docs/index.html
 ```
 
 Lá você encontrará:
@@ -87,8 +104,19 @@ Lá você encontrará:
 
 3. **Exemplo de requisição**:
    ```http
-   GET http://localhost:8000/weather?cep=01001000 HTTP/1.1
+   GET http://localhost:8080/weather?cep=01001000 HTTP/1.1
    ```
+
+## 🌐 Como Testar a API Implantada
+
+A API está implantada no Google Cloud Run e pode ser testada diretamente:
+
+- **Swagger**: https://deploy-cloud-run-mepu6h3qaa-uc.a.run.app/docs/index.html
+
+- **Exemplo de requisição**:
+  ```http
+  GET https://deploy-cloud-run-mepu6h3qaa-uc.a.run.app/weather?cep=01001000 HTTP/1.1
+  ```
 
 ## 📝 Endpoints Disponíveis
 

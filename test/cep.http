@@ -1,1 +1,1 @@
-Get http://localhost:8000/weather?cep=01001000  
+Get https://deploy-cloud-run-1020181349268.us-central1.run.app/weather?cep=41720000  
