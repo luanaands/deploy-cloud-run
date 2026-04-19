@@ -20,7 +20,7 @@ import (
 // @contact.name Luana Andrade
 // @contact.email luanaands@gmail.com
 
-// @host localhost:8000
+// @host localhost:8080
 // @basePath /
 func main() {
 	configs, err := configs.LoadConfig(".")
@@ -41,7 +41,7 @@ func main() {
 
 	r.Get("/weather", handler.GetCep)
 
-	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/docs/doc.json")))
+	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8080/docs/doc.json")))
 
-	http.ListenAndServe(":8000", r)
+	http.ListenAndServe(":8080", r)
 }
