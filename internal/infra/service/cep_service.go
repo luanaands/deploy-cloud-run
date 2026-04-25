@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 
@@ -37,6 +38,11 @@ func (s *CepService) GetViaCep(cep string, url string) (*dto.CepResponse, error)
 	if err := json.Unmarshal(body, &response); err != nil {
 		return nil, err
 	}
+
+	if response.Erro == "true" {
+		return nil, errors.New("can not find zipcode")
+	}
+
 	var dtoResponse *dto.CepResponse
 	dtoResponse = dto.FromViaCep(response)
 	return dtoResponse, nil

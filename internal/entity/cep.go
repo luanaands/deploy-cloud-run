@@ -14,6 +14,7 @@ type CepViaCepResponse struct {
 	Gia         string `json:"gia"`
 	Ddd         string `json:"ddd"`
 	Siafi       string `json:"siafi"`
+	Erro        string `json:"erro"`
 }
 
 type WeatherResponse struct {
